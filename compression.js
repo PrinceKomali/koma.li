@@ -1,3 +1,4 @@
+// Made for other projects but used here as well
 let MatchBase = " etaoinsr hdlucmfyw gpbvkxqjz"
 exports.CompressUInt = (n, cp) => {
     if (typeof cp == "string") cp = [...cp];
