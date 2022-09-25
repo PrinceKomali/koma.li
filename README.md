@@ -10,14 +10,10 @@ node index.js # Open http://localhost:3000 in your browser
 ## API
 **This project was made mainly for personal use so there is no ratelimiting/authentication for this API. Please don't go nuts with it, as the server is self-hosted off of an ancient Dell I got for free over the summer**
 
-### Upload URL:
 ```bash
 curl https://koma.li/_add \
   -H 'Content-Type: application/json' \
   -X POST \
-  -d '{"url": "https://komali.dev"}' 
-```
-### Get # of shortened URLs
-```bash
-curl https://koma.li/_int
+  -d '{"url": "https://komali.dev"}'
+# {"success":true,"data":"koma.li/0"} 
 ```
