@@ -1,0 +1,6 @@
+urls.db*
+backup
+num.txt
+transfer.sh
+node_modules
+.git

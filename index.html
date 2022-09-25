@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<head>
+    <link rel='shortcut icon' href='https://komali.dev/komali2Lurk.png'>
+    <meta property="og:title" content="Komali's URL Shortener" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Komali's URL Shortener</title>
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://koma.li" />
+    <meta property="og:image" content="https://komali.dev/stella_lurk.png" />
+    <meta property="og:description" content="Make your urls short!" />
+    <meta name="theme-color" content="#1A7CE2">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="stylesheet" href="main.css">
+</head>
+
+<body>
+    <img src="" id="bg_img" class="background" />
+    <img src="https://komali.dev/background_images/texture.png" class="background" style="opacity:.5" />
+    <div class="inner">
+        
+        <!-- Removing plug because I messed it all up :/ ---><!-- <a href="https://github.com/SurprisedPikaa/" class="plug">CSS By Pika</a> -->
+        <div class="content">
+            <h1>Komali's URL Shortener</h1>
+            <input class="inp" onkeydown="keydown(this)" placeholder="https://komali.dev"><button class="go" onclick="go()">Go!</button>
+            <div class="output"></div>
+            <div class="total"><span class="total_n">0</span> urls shortened so far</div>
+        </div>
+        <br>
+    </div>
+    <script>
+        let inp = document.querySelector(".inp");
+        function clip(e) {
+            try {
+                navigator.clipboard.writeText(e.innerText);
+                log(`Success:&nbsp<a class="result_link" href="#" onclick="clip(this)">${e.innerText}</a>&nbsp;(copied!)`, "#8f88");
+            } catch (err) {
+                log(`Failed to copy ${e.innerText} to clipboard; see console for more info`, "#f888");
+                console.error(err.stack);
+
+            }
+        }
+        let count = async () => document.querySelector(".total_n").innerText = await (await fetch("/_int")).text();
+        function log(m, c) {
+            let output = document.querySelector(".output");
+            output.innerHTML = m;
+            output.style.backgroundColor = c;
+        }
+        function keydown(e) {
+            if(event.key == "Enter") go();
+        }
+
+        // Feel free to use this backend; just don't go crazy with it :)
+        async function go() {
+            log("Loading...", "#fc88");
+            let val = inp.value;
+            inp.readOnly = true;
+            let json = await (await fetch("/_add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    url: val.trim()
+                })
+            })).json();
+            inp.readOnly = false;
+            let { success } = json;
+            if(!success) {
+                log("Error: " + json.data, "#d888");
+            }
+            else {
+                inp.value = "";
+                log(`Success:&nbsp<a class="result_link" href="#" onclick="clip(this)">${json.data}</a>&nbsp;(click to copy)`, "#8f88");
+            }
+            count();
+            
+        }
+
+
+        window.onload = async _ => {
+            count();
+
+            let img_url = `https://komali.dev/background_images/wallpaper.png`;
+            let temp = new Image();
+            temp.src = img_url;
+            let bg = document.querySelector("#bg_img");
+            temp.onload = _ => {
+                bg.src = img_url;
+                bg.classList.add('fadein');
+                        
+            }
+        }
+    </script>
+</body>
