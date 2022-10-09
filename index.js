@@ -95,7 +95,7 @@ app.get('/:path([A-Za-z0-9]*)', (req, res) => {
     let db_result = stmt.get(req.params.path);
     if(db_result) {
         
-        res.redirect(301, db_result.redirect);
+        res.redirect(301, decodeURI(db_result.redirect));
     }
     else { 
         res.type('text/html').send(fs.readFileSync("./404.html"))
