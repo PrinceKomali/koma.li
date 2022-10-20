@@ -46,7 +46,7 @@ function new_url(url) {
         data: "koma.li/" + check.endpoint
     };
     
-    url = encodeURI(url);
+   // url = encodeURI(url);
     let next;
     try {
         next = compress_num(
@@ -95,7 +95,7 @@ app.get('/:path([A-Za-z0-9]*)', (req, res) => {
     let db_result = stmt.get(req.params.path);
     if(db_result) {
         
-        res.redirect(301, db_result.redirect);
+        res.redirect(302, db_result.redirect);
     }
     else { 
         res.type('text/html').send(fs.readFileSync("./404.html"))
